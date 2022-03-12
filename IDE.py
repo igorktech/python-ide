@@ -126,16 +126,19 @@ class Notepad:
         # scrollbar adjust with content
         self.__thisScrollBar.config(command  = self.__thisTextArea.yview)
         self.__thisTextArea.config(yscrollcommand = self.__thisScrollBar.set)
-
-
         self.__thisOutputScrollBar.pack(side = RIGHT, fill = Y)
         # scrollbar adjust with content
         self.__thisOutputScrollBar.config(command  = self.__thisOutputWindow.yview)
         self.__thisOutputWindow.config(yscrollcommand = self.__thisOutputScrollBar.set)
-        # function to display and hide status bar
 
-    
-    def __hide_statusbar(self):
+        self.__thisTextArea.bind("<<Modified>>",self.__change_word)
+        self.__thisTextArea.bind("<F5>", self.__run)
+        self.__thisTextArea.bind("<Control-q>", self.__quitApplication)
+        self.__thisTextArea.bind("<Control-o>", self.__openFile)
+        self.__thisTextArea.bind("<Control-S>", self.__saveFile)
+        
+        # function to display and hide status bar
+    def __hide_statusbar(self,event=None):
         if self.__show_status_bar:
             self.__thisStatusBars.pack_forget()
             self.__show_status_bar = False 
@@ -144,7 +147,7 @@ class Notepad:
             self.__show_status_bar = True
 
     
-    def __change_word(self):
+    def __change_word(self,event=None):
         
         if self.__thisTextArea.edit_modified():
             self.__text_change = True
@@ -152,9 +155,10 @@ class Notepad:
             chararcter = len(self.__thisTextArea.get(1.0, "end-1c").replace(" ",""))
             self.__thisStatusBars.config(text = f"github.com/igorkkkk/PythonIDE \t\t\t\t\t\t characters: {chararcter} words: {word}")
         self.__thisTextArea.edit_modified(False)
-    __root.bind("<<Modified>>",__change_word)
 
-    def __run(self):
+        
+
+    def __run(self,event=None):
         if self.__file == None:
             self.__saveFile()
         '''global code, __file
@@ -175,17 +179,18 @@ class Notepad:
         # insert the error text in output_windows
         # if there is error
         self.__thisOutputWindow.insert(1.0, error)
-    __root.bind("<F5>", __run)
 
-    def __quitApplication(self):
+        
+
+    def __quitApplication(self,event=None):
         self.__root.destroy()
-    __root.bind("<Control-q>", __quitApplication)
+        
     
 
-    def __showAbout(self):
+    def __showAbout(self,event=None):
         showinfo("PyNotepad","My notepad for run Python")
 
-    def __openFile(self):
+    def __openFile(self,event=None):
         self.__file = askopenfilename(defaultextension = ".py", filetypes = [("All Files","*.*"),
                                                                     ("Python Documents", "*.py")])
         if self.__file == "":
@@ -198,14 +203,15 @@ class Notepad:
             file  = open(self.__file, "r")
             self.__thisTextArea.insert(1.0,file.read())
             file.close()
-    __root.bind("<Control-o>", __openFile)
 
-    def __newFile(self):
+        
+
+    def __newFile(self,event=None):
         self.__root.title("Untitled - PyNotepad")
         self.__file = None
         self.__thisTextArea(1.0, END)
 
-    def __saveFile(self):
+    def __saveFile(self,event=None):
         if self.__file == None:
             # save as new
             self.__file = asksaveasfilename(initialfile = 'Untitled.py', defaultextension= ".py", filetypes=
@@ -223,18 +229,19 @@ class Notepad:
             file = open(self.__file, "w")
             file.write(self.__thisTextArea.get(1.0,END))
             file.close()
-    __root.bind("<Control-S>", __saveFile)
+
+        
 
         # function for light mode window
-    def __light(self):
+    def __light(self,event=None):
       self.__thisTextArea.config(fg = 'black', bg = "white")
       self.__thisOutputWindow.config(fg = 'black', bg = "white")
     # function for dark mode window
-    def __dark(self):
+    def __dark(self,event=None):
         self.__thisTextArea.config(fg="white", bg = "black")
         self.__thisOutputWindow.config(fg="white", bg = "black")
 
-    def __my_theme(self):
+    def __my_theme(self,event=None):
         file  = open(self.__local_path, "r")
         if file == "":
             # no file to open
@@ -250,7 +257,7 @@ class Notepad:
             self.__thisOutputWindow.config(fg = self.__color_theme["brightYellow"], bg = self.__color_theme["background"],
             insertbackground = self.__color_theme ["brightRed"])
 
-    def __import_color_theme(self):
+    def __import_color_theme(self,event=None):
         self.__local_path = askopenfilename(defaultextension = ".json", filetypes = [("All Files","*.*"),
                                                                     ("Color Theme", "*.json")])
         if self.__local_path == "":
@@ -273,16 +280,16 @@ class Notepad:
             insertbackground = self.__color_theme ["brightRed"])
 
 
-    def __cut(self):
+    def __cut(self,event=None):
         self.__thisTextArea.event_generate("<<Cut>>")
 
-    def __copy(self):
+    def __copy(self,event=None):
         self.__thisTextArea.event_generate("<<Copy>>")
     
-    def __paste(self):
+    def __paste(self,event=None):
         self.__thisTextArea.event_generate("<<Paste>>")
 
-    def runApp(self):
+    def runApp(self,event=None):
         self.__root.mainloop()
 
 # run app
