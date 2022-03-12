@@ -1,0 +1,23 @@
+{
+    "name": "Theme",
+    "cursorColor": "#F8F8F3",
+    "selectionBackground": "#44476A",
+    "background": "#282A37",
+    "foreground": "#F8F8F3",
+    "black": "#21223C",
+    "blue": "#BD93F8",
+    "cyan": "#8BE9FD",
+    "green": "#50FA8B",
+    "purple": "#FF79C7",
+    "red": "#FF5556",
+    "white": "#F8F8F3",
+    "yellow": "#F1FA9C",
+    "brightBlack": "#6272A5",
+    "brightBlue": "#D6ACFE",
+    "brightCyan": "#A4FFFE",
+    "brightGreen": "#69FF95",
+    "brightPurple": "#FF93DF",
+    "brightRed": "#FF6E6E",
+    "brightWhite": "#FFFFFE",
+    "brightYellow": "#FFFFA6"
+}
